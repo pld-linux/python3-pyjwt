@@ -9,7 +9,7 @@
 Summary:	JSON Web Token implementation in Python
 Name:		python-%{module}
 Version:	1.4.0
-Release:	3
+Release:	4
 License:	MIT
 Group:		Libraries/Python
 Source0:	https://files.pythonhosted.org/packages/source/P/PyJWT/PyJWT-%{version}.tar.gz
