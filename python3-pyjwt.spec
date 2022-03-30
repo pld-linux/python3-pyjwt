@@ -8,7 +8,7 @@ Summary:	JSON Web Token implementation in Python 3
 Summary(pl.UTF-8):	Implementacja JSON Web Token w Pythonie 3
 Name:		python3-%{module}
 Version:	2.0.1
-Release:	3
+Release:	4
 License:	MIT
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/pyjwt/
