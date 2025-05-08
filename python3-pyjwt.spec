@@ -7,16 +7,17 @@
 Summary:	JSON Web Token implementation in Python 3
 Summary(pl.UTF-8):	Implementacja JSON Web Token w Pythonie 3
 Name:		python3-%{module}
-Version:	2.0.1
-Release:	6
+Version:	2.10.1
+Release:	1
 License:	MIT
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/pyjwt/
-Source0:	https://files.pythonhosted.org/packages/source/P/PyJWT/PyJWT-%{version}.tar.gz
-# Source0-md5:	93b74f59d08be8c852a3c259da2ea121
+Source0:	https://files.pythonhosted.org/packages/source/P/PyJWT/pyjwt-%{version}.tar.gz
+# Source0-md5:	f3273aaf736c24795e78ac48adbab111
 URL:		http://github.com/jpadilla/pyjwt
+BuildRequires:	python3-build
+BuildRequires:	python3-installer
 BuildRequires:	python3-modules >= 1:3.6
-BuildRequires:	python3-setuptools
 %if %{with tests}
 BuildRequires:	python3-cryptography >= 3.3.1
 BuildRequires:	python3-pytest >= 5.0.0
@@ -52,16 +53,17 @@ API documentation for PyJWT.
 Dokumentacja API moduły PyJWT.
 
 %prep
-%setup -q -n PyJWT-%{version}
-
-# Remove bundled egg-info
-%{__rm} -r PyJWT.egg-info
+%setup -q -n pyjwt-%{version}
 
 %build
-%py3_build
+%py3_build_pyproject
 
 %if %{with tests}
-%{__python3} -m pytest tests
+%{__python3} -m zipfile -e build-3/*.whl build-3-test
+# use explicit plugins list for reliable builds (delete PYTEST_PLUGINS if empty)
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
+PYTEST_PLUGINS= \
+%{__python3} -m pytest -o pythonpath="$PWD/build-3-test" tests
 %endif
 
 %if %{with doc}
@@ -72,7 +74,7 @@ Dokumentacja API moduły PyJWT.
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%py3_install
+%py3_install_pyproject
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -81,7 +83,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS.rst CHANGELOG.rst LICENSE README.rst
 %{py3_sitescriptdir}/jwt
-%{py3_sitescriptdir}/PyJWT-%{version}-py*.egg-info
+%{py3_sitescriptdir}/pyjwt-%{version}.dist-info
 
 %if %{with doc}
 %files apidocs
